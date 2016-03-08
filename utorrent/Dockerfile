@@ -21,20 +21,19 @@ ADD http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-
 #
 # Add utorrent init script and config.
 #
-ADD utorrent.sh /opt/utorrent/utorrent.sh
-ADD utorrent.conf /opt/utorrent/utorrent.conf
+ADD utserver.sh /opt/utorrent/utserver.sh
+ADD utserver.conf /opt/utorrent/utserver.conf
 
 #
 # Unpack utorrent and change permissions
 #
-RUN tar vxzf /tmp/utserver.tar.gz --strip-components 1 -C /opt/utorrent && \
-    rm -f /tmp/utserver.tar.gz && \
-    chmod 755 /opt/utorrent/utorrent.sh && \
-    mkdir /utorrent && \
-    chown utorrent:utorrent /utorrent
-
 VOLUME ["/utorrent", "/data"]
 EXPOSE 8080 6881
+
+RUN tar vxzf /tmp/utserver.tar.gz --strip-components 1 -C /opt/utorrent && \
+    rm -f /tmp/utserver.tar.gz && \
+    chown -R utorrent:utorrent /utorrent && \
+    chmod 755 /opt/utorrent/utserver.sh
 
 #
 # Start utorrent.
@@ -43,4 +42,4 @@ EXPOSE 8080 6881
 WORKDIR /utorrent
 USER utorrent
 
-CMD ["/opt/utorrent/utorrent.sh"]
+CMD ["/opt/utorrent/utserver.sh"]
