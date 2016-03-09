@@ -10,8 +10,7 @@ ENV LANGUAGE en_US:en
 #
 # Create user and group for utorrent
 #
-RUN groupadd -r -g 666 utorrent && \
-    useradd -r -u 666 -g 666 -m utorrent
+RUN useradd -G users -m utorrent
 
 #
 # Add utorrent dist
