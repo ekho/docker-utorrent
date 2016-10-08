@@ -8,6 +8,10 @@ A Dockerfile for [Resilio Sync](https://www.resilio.com/). The default login is 
 
 ### `/data`
 
+Data storage.
+
+### `/rslsync`
+
 Configuration files and state for Resilio Sync.
 
 ## Ports
