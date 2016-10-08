@@ -1,4 +1,4 @@
-# docker-btsync
+# Resilio Sync
 
 ## Description
 
