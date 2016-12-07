@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+#set -x
 
 BASEDIR=/eursync
 DATADIR=${BASEDIR}/data

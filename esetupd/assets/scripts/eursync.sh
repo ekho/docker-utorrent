@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+#set -x
 
 halt() {
     echo $@ >&2
@@ -17,7 +17,7 @@ lockfile-touch ${LOCKFILE} &
 # Save the PID of the lockfile-touch process
 BADGER="$!"
 
-OPTIONS="--checksum --recursive --compress --verbose"
+OPTIONS="--delete --checksum --recursive --compress --verbose"
 OPTIONS="${OPTIONS} --partial --partial-dir=${PARTIALDIR}"
 OPTIONS="${OPTIONS} --exclude-from=${EXCLUDEFILE}"
 OPTIONS="${OPTIONS} --password-file=${PASSWDFILE}"
