@@ -1,9 +1,9 @@
 FROM alpine:latest
 MAINTAINER Boris Gorbylev <ekho@ekho.name>
 
-ENV REMOTEDIR 'rsync://<host>[/path]'
-ENV PASSWORD '******'
-ENV LOCALDIR '/'
+ENV REMOTEDIR 'rsync://<host>[/path]' \
+    PASSWORD '******' \
+    LOCALDIR '/'
 
 VOLUME /eursync/data
 
