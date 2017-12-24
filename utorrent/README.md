@@ -9,16 +9,56 @@ Docker image to run the [utorrent server](http://www.utorrent.com/).
 To run the utorrent container you can execute:
 
 ```bash
-docker run                  \
-    --name utorrent         \
-    -v <data dir>:/data     \
-    -v <work dir>:/utorrent \
-    -p 8080:8080            \
-    -p 6881:6881            \
-    ekho/utorrent
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
 ```
 
 Open a browser and point your to [http://docker-host:8080/gui](http://docker-host:8080/gui)
+
+### Settings persistence
+
+#### Dir on host machine
+```bash
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -v /path/to/setting/dir:/utorrent/settings        \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
+```
+
+#### Named volume
+```bash
+docker volume create utorrent-settings
+
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -v utorrent-settings:/utorrent/settings           \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
+```
+
+### Custom config
+
+Download [utserver.conf](https://raw.githubusercontent.com/ekho/dockerized-tools/master/utorrent/utserver.conf) and modify it as you want.
+All available settings you can find in [example config](https://raw.githubusercontent.com/ekho/dockerized-tools/master/utorrent/utserver.conf.example). 
+
+```bash
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -v /path/to/utserver.conf:/utorrent/utserver.conf \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
+```
 
 ### Run via Docker Compose
 
@@ -27,24 +67,27 @@ You can also run the utorrent container by using [Docker Compose](https://www.do
 Create your Docker Compose file (docker-compose.yml) using the following YAML snippet:
 
 ```yaml
-utorrent:
-    image: ekho/utorrent
+version: '3'
+services:
+  utorrent:
+    image: ekho/utorrent:latest
     container_name: utorrent
     volumes:
-        - <data dir>:/data
-        - <work dir>:/utorrent
+      - /path/to/data/dir:/utorrent/data
+      - utorrent-settings:/utorrent/settings
+      - /path/to/utserver.conf:/utorrent/utserver.conf
     ports:
-        - 8080:8080
-        - 6881:6881
+      - 8080:8080
+      - 6881:6881
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  utorrent-settings:
 ```
 
-## Configuration
-
-### Volumes
-
-Please mount the following volumes inside your utorrent container:
-
-* `/utorrent`: Holds all the utorrent settings files and databases
-* `/data`: Directory for your downloaded media
-
+## Changes
+* 2017-12-24 changed directories layout

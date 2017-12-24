@@ -1,4 +1,5 @@
 .idea
+.gitignore
 LICENSE
 README.md
-.gitignore
+utserver.conf.example
