@@ -107,5 +107,5 @@ volumes:
 ```
 
 ## Changes
-* 2017-12-24 changed directories layout
 * 2018-01-03 added host uid/gid usage 
+* 2017-12-24 changed directories layout
