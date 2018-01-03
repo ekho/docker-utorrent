@@ -60,7 +60,21 @@ docker run                                            \
     ekho/utorrent:latest
 ```
 
-### Run via Docker Compose
+### Custom UID/GID
+
+By default container tries to use uid/gid of owner of `/utorrent/data` volume. But you can specify custom UID/GID by environment variables.
+
+```bash
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -e HOST_UID=1002 -e HOST_GID=1002                 \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
+```
+
+## Run via Docker Compose
 
 You can also run the utorrent container by using [Docker Compose](https://www.docker.com/docker-compose).
 
@@ -76,6 +90,9 @@ services:
       - /path/to/data/dir:/utorrent/data
       - utorrent-settings:/utorrent/settings
       - /path/to/utserver.conf:/utorrent/utserver.conf
+    environment:
+      HOST_UID: 1002
+      HOST_GID: 1002
     ports:
       - 8080:8080
       - 6881:6881
@@ -91,3 +108,4 @@ volumes:
 
 ## Changes
 * 2017-12-24 changed directories layout
+* 2018-01-03 added host uid/gid usage 

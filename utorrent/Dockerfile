@@ -6,12 +6,13 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
-    useradd -G users -d /utorrent -m utorrent && \
+    addgroup --gid 1001 utorrent && \
+    adduser --uid 1001 --ingroup utorrent --home /utorrent --shell /bin/bash --disabled-password --gecos "" utorrent && \
     apt-get update && \
     apt-get install -y locales curl && \
     locale-gen en_US.UTF-8 && \
     locale && \
-    curl -L http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
+    curl -SL http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
     tar vxz --strip-components 1 -C /utorrent && \
     apt-get purge -y curl && \
     apt-get autoremove -y && \
@@ -30,10 +31,10 @@ ADD utserver.conf /utorrent/utserver.conf
 RUN chown utorrent:utorrent /utorrent/entrypoint.sh && \
     chmod 755 /utorrent/entrypoint.sh
 
-WORKDIR /utorrent
-USER utorrent
-VOLUME ["/utorrent/settings"]
+VOLUME ["/utorrent/settings", "/utorrent/data"]
 EXPOSE 8080 6881
+
+WORKDIR /utorrent
 
 ENTRYPOINT ["/utorrent/entrypoint.sh"]
 CMD ["/utorrent/utserver", "-settingspath", "/utorrent/settings", "-configfile", "/utorrent/utserver.conf", "-logfile", "/utorrent/utserver.log"]
