@@ -9,8 +9,8 @@ fi
 CURRENT_UID=$(id -u)
 if [[ ${CURRENT_UID} != 0 ]]; then
     echo "[WARN] Host UID/GID usage disabled because the container is not running under the root (current uid: ${CURRENT_UID})"
-    "$@"
-    exit $?
+    exec "$@"
+    exit
 fi
 
 # we find the host uid/gid by assuming the app directory belongs to the host
@@ -45,4 +45,4 @@ if [[ ${DO_CHOWN} != 0 ]]; then
   done
 fi
 
-sudo -u utorrent -g utorrent -- "$@"
+exec sudo -u utorrent -g utorrent -- "$@"
