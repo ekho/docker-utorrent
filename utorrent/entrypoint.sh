@@ -6,6 +6,12 @@ if [ ! -z "${DEBUG}" ]; then
     set -x
 fi
 
+if [ "${NGWEBUI}" == "1" ]; then
+    cp -f /utorrent/ng-webui.zip /utorrent/webui.zip
+else
+    cp -f /utorrent/orig-webui.zip /utorrent/webui.zip
+fi
+
 CURRENT_UID=$(id -u)
 if [[ ${CURRENT_UID} != 0 ]]; then
     echo "[WARN] Host UID/GID usage disabled because the container is not running under the root (current uid: ${CURRENT_UID})"
@@ -40,7 +46,7 @@ if [[ ${DO_CHOWN} != 0 ]]; then
   shopt -s dotglob
   for file in /utorrent/*; do
     if [ $file != "/utorrent/utserver" ]; then
-      chown -R utorrent:utorrent $file
+      chown -R utorrent:utorrent ${file}
     fi
   done
 fi

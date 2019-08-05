@@ -14,22 +14,23 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     locale && \
     curl -SL http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
     tar vxz --strip-components 1 -C /utorrent && \
-    apt-get purge -y curl && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/apt/* && \
     mkdir /utorrent/settings && \
     mkdir /utorrent/data && \
     touch /utorrent/utserver.log && \
     ln -sf /dev/stdout /utorrent/utserver.log && \
-    chown -R utorrent:utorrent /utorrent
+    chown -R utorrent:utorrent /utorrent && \
+    cp /utorrent/webui.zip /utorrent/orig-webui.zip && \
+    curl -sSL https://github.com/psychowood/ng-torrent-ui/releases/latest/download/webui.zip --output /utorrent/ng-webui.zip && \
+    apt-get purge -y curl && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/*
 
-ADD entrypoint.sh /utorrent/entrypoint.sh
-ADD utserver.conf /utorrent/utserver.conf
+ADD --chown=utorrent:utorrent entrypoint.sh /utorrent/entrypoint.sh
+ADD --chown=utorrent:utorrent utserver.conf /utorrent/utserver.conf
 
-RUN chown utorrent:utorrent /utorrent/entrypoint.sh && \
-    chmod 755 /utorrent/entrypoint.sh
+RUN chmod 755 /utorrent/entrypoint.sh
 
 VOLUME ["/utorrent/settings", "/utorrent/data"]
 EXPOSE 8080 6881
