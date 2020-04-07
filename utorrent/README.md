@@ -74,7 +74,7 @@ docker run                                            \
     ekho/utorrent:latest
 ```
 
-### Alternative UI
+### Alternative NG UI
 
 [Angular + (flat) Boostrap (μ)Torrent Web UI](https://github.com/psychowood/ng-torrent-ui)
 
@@ -85,6 +85,22 @@ docker run                                            \
     --name utorrent                                   \
     -v /path/to/data/dir:/utorrent/data               \
     -e NGWEBUI=1                                      \
+    -p 8080:8080                                      \
+    -p 6881:6881                                      \
+    ekho/utorrent:latest
+```
+
+### Alternative UT UI
+
+[(μ)Torrent Web UI](https://forum.utorrent.com/topic/49588-%C2%B5torrent-webui/)
+
+Already bundled. You can activate it with env var `UTWEBUI=1`.
+
+```bash
+docker run                                            \
+    --name utorrent                                   \
+    -v /path/to/data/dir:/utorrent/data               \
+    -e UTWEBUI=1                                      \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
     ekho/utorrent:latest
@@ -124,6 +140,7 @@ volumes:
 ```
 
 ## Changes
+* 2020-04-07 added alternative ui - utorrent-ui
 * 2019-08-05 added alternative ui - psychowood/ng-torrent-ui
 * 2018-01-03 added host uid/gid usage 
 * 2017-12-24 changed directories layout

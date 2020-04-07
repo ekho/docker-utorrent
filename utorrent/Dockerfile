@@ -21,6 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     chown -R utorrent:utorrent /utorrent && \
     cp /utorrent/webui.zip /utorrent/orig-webui.zip && \
     curl -sSL https://github.com/psychowood/ng-torrent-ui/releases/latest/download/webui.zip --output /utorrent/ng-webui.zip && \
+    curl -sSL https://sites.google.com/site/ultimasites/files/utorrent-webui.2013052820184444.zip?attredirects=0 --output /utorrent/ut-webui.zip && \
     apt-get purge -y curl && \
     apt-get autoremove -y && \
     apt-get clean -y && \
