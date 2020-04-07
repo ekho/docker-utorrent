@@ -8,6 +8,8 @@ fi
 
 if [ "${NGWEBUI}" == "1" ]; then
     cp -f /utorrent/ng-webui.zip /utorrent/webui.zip
+elif [ "${UTWEBUI}" == "1" ]; then
+    cp -f /utorrent/ut-webui.zip /utorrent/webui.zip
 else
     cp -f /utorrent/orig-webui.zip /utorrent/webui.zip
 fi
