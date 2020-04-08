@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM ubuntu:trusty
 MAINTAINER Boris Gorbylev "ekho@ekho.name"
 
 ENV LC_ALL en_US.UTF-8
@@ -14,7 +14,7 @@ RUN set -eux; \
     apt-get install -y curl sudo; \
     groupadd --gid 1001 utorrent; \
     useradd --uid 1001 --gid utorrent --groups tty --home-dir /utorrent --create-home --shell /bin/bash utorrent; \
-    curl -SL http://download-hr.utorrent.com/track/beta/endpoint/utserver/os/linux-x64-debian-7-0 | \
+    curl -SL http://download-hr.utorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
     tar vxz --strip-components 1 -C /utorrent; \
     mkdir /utorrent/settings; \
     mkdir /utorrent/data; \
