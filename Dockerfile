@@ -32,7 +32,7 @@ RUN set -eux; \
 ADD --chown=utorrent:utorrent docker-entrypoint.sh /
 ADD --chown=utorrent:utorrent utserver.conf /utorrent/
 
-RUN chmod 755 /utorrent/entrypoint.sh
+RUN chmod 755 /docker-entrypoint.sh
 
 VOLUME ["/utorrent/settings", "/utorrent/data"]
 EXPOSE 8080 6881
