@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM debian:buster-slim
 MAINTAINER Boris Gorbylev "ekho@ekho.name"
 
 ENV LC_ALL en_US.UTF-8
@@ -8,12 +8,13 @@ ENV LANGUAGE en_US:en
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
-    apt-get install -y locales curl; \
+    apt-get install -y locales; \
     locale-gen en_US.UTF-8; \
     locale; \
-    addgroup --gid 1001 utorrent; \
-    adduser --uid 1001 --ingroup utorrent --home /utorrent --shell /bin/bash --disabled-password --gecos "" utorrent; \
-    curl -SL http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
+    apt-get install -y curl sudo; \
+    groupadd --gid 1001 utorrent; \
+    useradd --uid 1001 --gid utorrent --groups tty --home-dir /utorrent --create-home --shell /bin/bash utorrent; \
+    curl -SL http://download-hr.utorrent.com/track/beta/endpoint/utserver/os/linux-x64-debian-7-0 | \
     tar vxz --strip-components 1 -C /utorrent; \
     mkdir /utorrent/settings; \
     mkdir /utorrent/data; \
@@ -40,4 +41,4 @@ EXPOSE 8080 6881
 WORKDIR /utorrent
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/utorrent/utserver", "-settingspath", "/utorrent/settings", "-configfile", "/utorrent/utserver.conf", "-logfile", "/utorrent/utserver.log"]
+CMD ["/utorrent/utserver", "-settingspath", "/utorrent/settings", "-configfile", "/utorrent/utserver.conf", "-logfile", "/dev/pts/0"]
