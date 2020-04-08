@@ -7,12 +7,24 @@ if [ ! -z "${DEBUG}" ]; then
 fi
 
 if [ "${NGWEBUI}" == "1" ]; then
-    cp -f /utorrent/ng-webui.zip /utorrent/webui.zip
+    echo "[WARN] Using deprecated env var NGWEBUI=1. Use WEBUI=NG" >&2
+    WEBUI=NG
 elif [ "${UTWEBUI}" == "1" ]; then
-    cp -f /utorrent/ut-webui.zip /utorrent/webui.zip
-else
-    cp -f /utorrent/orig-webui.zip /utorrent/webui.zip
+    echo "[WARN] Using deprecated env var UTWEBUI=1. Use WEBUI=UT" >&2
+    WEBUI=UT
 fi
+
+case ${WEBUI:-ORIG} in
+  NG | ng)
+    cp -f /utorrent/ng-webui.zip /utorrent/webui.zip
+    ;;
+  UT | ut)
+    cp -f /utorrent/ut-webui.zip /utorrent/webui.zip
+    ;;
+  *)
+    cp -f /utorrent/orig-webui.zip /utorrent/webui.zip
+    ;;
+esac
 
 CURRENT_UID=$(id -u)
 if [[ ${CURRENT_UID} != 0 ]]; then

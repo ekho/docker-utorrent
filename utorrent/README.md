@@ -78,13 +78,13 @@ docker run                                            \
 
 [Angular + (flat) Boostrap (μ)Torrent Web UI](https://github.com/psychowood/ng-torrent-ui)
 
-Already bundled. You can activate it with env var `NGWEBUI=1`.
+Already bundled. You can activate it with env var `WEBUI=NG`.
 
 ```bash
 docker run                                            \
     --name utorrent                                   \
     -v /path/to/data/dir:/utorrent/data               \
-    -e NGWEBUI=1                                      \
+    -e WEBUI=NG                                       \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
     ekho/utorrent:latest
@@ -94,13 +94,13 @@ docker run                                            \
 
 [(μ)Torrent Web UI](https://forum.utorrent.com/topic/49588-%C2%B5torrent-webui/)
 
-Already bundled. You can activate it with env var `UTWEBUI=1`.
+Already bundled. You can activate it with env var `WEBUI=UT`.
 
 ```bash
 docker run                                            \
     --name utorrent                                   \
     -v /path/to/data/dir:/utorrent/data               \
-    -e UTWEBUI=1                                      \
+    -e WEBUI=UT                                       \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
     ekho/utorrent:latest
@@ -125,7 +125,7 @@ services:
     environment:
       HOST_UID: 1002
       HOST_GID: 1002
-      NGWEBUI: 1
+      WEBUI: NG
     ports:
       - 8080:8080
       - 6881:6881
@@ -140,6 +140,7 @@ volumes:
 ```
 
 ## Changes
+* 2020-04-08 minor build refactoring
 * 2020-04-07 added alternative ui - utorrent-ui
 * 2019-08-05 added alternative ui - psychowood/ng-torrent-ui
 * 2018-01-03 added host uid/gid usage 
