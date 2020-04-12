@@ -13,7 +13,7 @@ RUN set -eux; \
     locale; \
     apt-get install -y curl sudo; \
     groupadd --gid 1001 utorrent; \
-    useradd --uid 1001 --gid utorrent --home-dir /utorrent --create-home --shell /bin/bash utorrent; \
+    useradd --uid 1001 --gid utorrent --groups tty --home-dir /utorrent --create-home --shell /bin/bash utorrent; \
     curl -SL http://download-hr.utorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 | \
     tar vxz --strip-components 1 -C /utorrent; \
     mkdir /utorrent/settings; \
