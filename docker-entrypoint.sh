@@ -2,27 +2,22 @@
 
 set -e
 
-if [ ! -z "${DEBUG}" ]; then
-    set -x
+if [ -n "${DEBUG}" ]; then
+  set -x
+  DEBUG_FIND="-print"
+  CONFD_LOGLEVEL="-log-level debug"
 fi
 
-if [ "${NGWEBUI}" == "1" ]; then
-    echo "[WARN] Using deprecated env var NGWEBUI=1. Use WEBUI=NG" >&2
-    WEBUI=NG
-elif [ "${UTWEBUI}" == "1" ]; then
-    echo "[WARN] Using deprecated env var UTWEBUI=1. Use WEBUI=UT" >&2
-    WEBUI=UT
-fi
-
-case ${WEBUI:-ORIG} in
+case ${webui:-builtin} in
   NG | ng)
-    cp -f /utorrent/ng-webui.zip /utorrent/webui.zip
+    echo "[$(date -u "+%FT%TZ")] NG webui"
     ;;
   UT | ut)
-    cp -f /utorrent/ut-webui.zip /utorrent/webui.zip
+    echo "[$(date -u "+%FT%TZ")] UT webui"
     ;;
   *)
-    cp -f /utorrent/orig-webui.zip /utorrent/webui.zip
+    echo "[$(date -u "+%FT%TZ")] BUILTIN webui"
+    webui=builtin
     ;;
 esac
 
@@ -34,35 +29,51 @@ if [[ ${CURRENT_UID} != 0 ]]; then
 fi
 
 # we find the host uid/gid by assuming the app directory belongs to the host
-if [ -z "${HOST_UID}" ]; then
-  HOST_UID=$(stat -c %u /utorrent/data)
+if [ -z "${UID}" ]; then
+  UID=$(stat -c %u /data)
 fi
-if [ -z "${HOST_GID}" ]; then
-  HOST_GID=$(stat -c %g /utorrent/data)
+if [ -z "${GID}" ]; then
+  GID=$(stat -c %g /data)
 fi
 
 DO_CHOWN=0
 
 # If the docker user doesn't share the same uid, change it so that it does
-if [ ! "${HOST_UID}" = "$(id -u utorrent)" ] && [[ ${HOST_UID} != 0 ]]; then
-  usermod -o -u ${HOST_UID} utorrent
+if [[ ${UID}  -ne $(id -u utorrent) ]] && [[ ${UID} != 0 ]]; then
+  echo "[$(date -u "+%FT%TZ")] Data dir owner does not met utorrent user"
+  echo "[$(date -u "+%FT%TZ")] Changing utorrent user UID to ${UID}"
+  usermod -o -u ${UID} utorrent
   DO_CHOWN=1
 fi
 
-if [ ! "${HOST_GID}" = "$(id -g utorrent)" ] && [[ ${HOST_GID} != 0 ]]; then
-  groupmod -o -g ${HOST_GID} utorrent
+if [[ ${GID} -ne $(id -g utorrent) ]] && [[ ${GID} != 0 ]]; then
+  echo "[$(date -u "+%FT%TZ")] Data dir group does not met utorrent user group"
+  echo "[$(date -u "+%FT%TZ")] Changing utorrent user group GID to ${GID}"
+  groupmod -o -g ${GID} utorrent
   DO_CHOWN=1
 fi
 
 # also update the file uid/gid for files in the docker home directory
 # skip the mounted "app" dir because we don't want any changes to mounted file ownership
-if [[ ${DO_CHOWN} != 0 ]]; then
-  shopt -s dotglob
-  for file in /utorrent/*; do
-    if [ $file != "/utorrent/utserver" ]; then
-      chown -R utorrent:utorrent ${file}
-    fi
-  done
+if [[ ${DO_CHOWN} -ne 0 ]]; then
+  echo "[$(date -u "+%FT%TZ")] Changing ownership of /utorrent dir"
+  find /utorrent -not \( -user utorrent -group utorrent \) ${DEBUG_FIND} -exec chown utorrent:utorrent {} \;
+
+  echo "[$(date -u "+%FT%TZ")] Changing ownership of /data dir"
+  find /data -not \( -user utorrent -group utorrent \) ${DEBUG_FIND} -exec chown utorrent:utorrent {} \;
 fi
+
+IFS=',' read -r -a dir_download <<< "${dir_download}"
+for d in "${dir_download[@]}"; do
+  d=/data/${d}
+  echo "[$(date -u "+%FT%TZ")] Ensure dir exists: ${d}"
+  mkdir -p ${d}
+  if [[ ${DO_CHOWN} -ne 0 ]]; then
+    echo "[$(date -u "+%FT%TZ")] Changing ownership of ${d} dir"
+    find ${d} -not \( -user utorrent -group utorrent \) ${DEBUG_FIND} -exec chown utorrent:utorrent {} \;
+  fi
+done
+
+sudo -u utorrent -g utorrent -- /confd -onetime -backend env ${CONFD_LOGLEVEL} || exit 13
 
 exec sudo -u utorrent -g utorrent -- "$@"

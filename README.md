@@ -1,4 +1,10 @@
 # docker-utorrent
+![Docker Pulls](https://img.shields.io/docker/pulls/ekho/utorrent?style=flat-square)
+![Docker Stars](https://img.shields.io/docker/stars/ekho/utorrent?style=flat-square)
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ekho/utorrent?sort=semver&style=flat-square)
+![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/ekho/utorrent?sort=semver&style=flat-square)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ekho/utorrent?style=flat-square)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ekho/utorrent?style=flat-square)
 
 Docker image to run the [utorrent server](http://www.utorrent.com/).
 
@@ -11,10 +17,11 @@ To run the utorrent container you can execute:
 ```bash
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
+    -v /path/to/data/dir:/data                        \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
 Open a browser and point your to [http://docker-host:8080/gui](http://docker-host:8080/gui)
@@ -25,11 +32,12 @@ Open a browser and point your to [http://docker-host:8080/gui](http://docker-hos
 ```bash
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
+    -v /path/to/data/dir:/data                        \
     -v /path/to/setting/dir:/utorrent/settings        \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
 #### Named volume
@@ -38,72 +46,75 @@ docker volume create utorrent-settings
 
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
+    -v /path/to/data/dir:/data                        \
     -v utorrent-settings:/utorrent/settings           \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
-### Custom config
+### Configure
 
-Download [utserver.conf](https://github.com/ekho/dockerized-tools/blob/master/utserver.conf) and modify it as you want.
-All available settings you can find in [example config](https://raw.githubusercontent.com/ekho/dockerized-tools/master/utorrent/utserver.conf.example). 
+All available settings you can find in [example config](./utserver.conf.example).
+Almost all of these settings can be changed except:
+- `bind_ip` - set as 0.0.0.0
+- `dir_active`, `dir_completed` - /data
+- `dir_torrent_files` - /utorrent/torrents
+- `dir_temp_files` - /utorrent/temp
+- `dir_autoload` - /utorrent/autoload
+- `dir_request` - /utorrent/request
+- `dir_root` - /data
+- `preferred_interface` - empty
+- `ut_webui_dir` - controlled by `webui` var
+- `randomize_bind_port` - false
+
+You can specify list of download dirs using `dir_download` var.
 
 ```bash
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
-    -v /path/to/utserver.conf:/utorrent/utserver.conf \
+    -v /path/to/data/dir:/data                        \
+    -v /path/to/data/dir2:/abs-path-dir               \
+    -e dir_autoload_delete=true                       \
+    -e dir_download=subdir1,/abs-path-dir             \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
 ### Custom UID/GID
 
-By default container tries to use uid/gid of owner of `/utorrent/data` volume. But you can specify custom UID/GID by environment variables.
+By default container tries to use uid/gid of owner of `/data` volume. But you can specify custom UID/GID by environment variables.
 
 ```bash
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
-    -e HOST_UID=1002 -e HOST_GID=1002                 \
+    -v /path/to/data/dir:/data                        \
+    -e UID=1000 -e GID=1000                           \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
-### Alternative NG UI
+### Alternative UI
 
-[Angular + (flat) Boostrap (μ)Torrent Web UI](https://github.com/psychowood/ng-torrent-ui)
+- `ng` - [Angular + (flat) Boostrap (μ)Torrent Web UI](https://github.com/psychowood/ng-torrent-ui)
+- `ut` - [(μ)Torrent Web UI](https://forum.utorrent.com/topic/49588-%C2%B5torrent-webui/)
 
-Already bundled. You can activate it with env var `WEBUI=NG`.
-
-```bash
-docker run                                            \
-    --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
-    -e WEBUI=NG                                       \
-    -p 8080:8080                                      \
-    -p 6881:6881                                      \
-    ekho/utorrent:latest
-```
-
-### Alternative UT UI
-
-[(μ)Torrent Web UI](https://forum.utorrent.com/topic/49588-%C2%B5torrent-webui/)
-
-Already bundled. You can activate it with env var `WEBUI=UT`.
+Already bundled. You can activate it with env var `webui=<ng|ut>`.
 
 ```bash
 docker run                                            \
     --name utorrent                                   \
-    -v /path/to/data/dir:/utorrent/data               \
-    -e WEBUI=UT                                       \
+    -v /path/to/data/dir:/data                        \
+    -e webui=ng                                       \
     -p 8080:8080                                      \
     -p 6881:6881                                      \
-    ekho/utorrent:latest
+    -p 6881:6881/udp                                  \
+    ekho/utorrent:<tag>
 ```
 
 ## Run via Docker Compose
@@ -113,33 +124,37 @@ You can also run the utorrent container by using [Docker Compose](https://www.do
 Create your Docker Compose file (docker-compose.yml) using the following YAML snippet:
 
 ```yaml
-version: '3'
+version: '3.7'
 services:
   utorrent:
-    image: ekho/utorrent:latest
-    container_name: utorrent
+    image: ekho/utorrent:<tag>
     volumes:
-      - /path/to/data/dir:/utorrent/data
       - utorrent-settings:/utorrent/settings
-      - /path/to/utserver.conf:/utorrent/utserver.conf
+      - /path/to/data/dir:/data
+      - /path/to/data/dir2:/abs-path-dir
     environment:
-      HOST_UID: 1002
-      HOST_GID: 1002
-      WEBUI: NG
+      UID: 1000
+      GID: 1000
+      webui: ng
+      dir_autoload_delete: true
+      dir_download: subdir1,/abs-path-dir
     ports:
       - 8080:8080
       - 6881:6881
+      - 6881:6881/udp
     restart: always
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
+
 volumes:
   utorrent-settings:
 ```
 
 ## Changes
+* 2020-04-15 totally refactored; incompatible with previous setup
 * 2020-04-08 minor build refactoring
 * 2020-04-07 added alternative ui - utorrent-ui
 * 2019-08-05 added alternative ui - psychowood/ng-torrent-ui

@@ -1,0 +1,4 @@
+[template]
+src = "utserver.conf.tmpl"
+dest = "/utorrent/utserver.conf"
+keys = []
