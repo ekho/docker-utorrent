@@ -8,6 +8,8 @@
 
 Docker image to run the [utorrent server](http://www.utorrent.com/).
 
+**NOTE:** Image has been refactored. You should update your configs. Or you can use `ekho/utorrent:legacy` image instead of `ekho/utorrent:latest`
+
 ## Run
 
 ### Run via Docker CLI client
