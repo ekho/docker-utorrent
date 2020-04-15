@@ -65,7 +65,9 @@ fi
 
 IFS=',' read -r -a DIR_DOWNLOAD <<< "${dir_download}"
 for d in "${DIR_DOWNLOAD[@]}"; do
-  d=/data/${d}
+  if [[ ${d} != /* ]]; then
+    d=/data/${d}
+  fi
   echo "[$(date -u "+%FT%TZ")] Ensure dir exists: ${d}"
   mkdir -p ${d}
   if [[ ${DO_CHOWN} -ne 0 ]]; then
