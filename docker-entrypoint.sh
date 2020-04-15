@@ -63,8 +63,8 @@ if [[ ${DO_CHOWN} -ne 0 ]]; then
   find /data -not \( -user utorrent -group utorrent \) ${DEBUG_FIND} -exec chown utorrent:utorrent {} \;
 fi
 
-IFS=',' read -r -a dir_download <<< "${dir_download}"
-for d in "${dir_download[@]}"; do
+IFS=',' read -r -a DIR_DOWNLOAD <<< "${dir_download}"
+for d in "${DIR_DOWNLOAD[@]}"; do
   d=/data/${d}
   echo "[$(date -u "+%FT%TZ")] Ensure dir exists: ${d}"
   mkdir -p ${d}
@@ -76,4 +76,4 @@ done
 
 sudo -E -u utorrent -g utorrent -- /confd -onetime -backend env ${CONFD_LOGLEVEL} || exit 13
 
-exec sudo -u utorrent -g utorrent -- "$@"
+exec sudo -E -u utorrent -g utorrent -- "$@"
