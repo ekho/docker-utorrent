@@ -74,6 +74,6 @@ for d in "${dir_download[@]}"; do
   fi
 done
 
-sudo -u utorrent -g utorrent -- /confd -onetime -backend env ${CONFD_LOGLEVEL} || exit 13
+sudo -E -u utorrent -g utorrent -- /confd -onetime -backend env ${CONFD_LOGLEVEL} || exit 13
 
 exec sudo -u utorrent -g utorrent -- "$@"
