@@ -169,7 +169,7 @@ dir_autoload_delete: {{toLower (getenv "dir_autoload_delete" "false")}}
 ## of .loaded. The dir_autoload setting must be specified for this setting to
 ## have an effect.
 
-dir_request: {{toLower (getenv "dir_request" "/utorrent/request")}}
+dir_request: {{getenv "dir_request" "/utorrent/request"}}
 ## dir_request (string):
 ## Default value: "". Directory where maintenance request files will be
 ## recognized, loaded, and deleted. If the empty string, maintenance request
