@@ -138,7 +138,7 @@ dir_download: {{.}}
 ## The value of this setting will be applied every time the utserver process
 ## starts or the configuration file is reloaded.
 
-dir_torrent_files: {{toLower (getenv "dir_torrent_files" "/utorrent/torrents")}}
+dir_torrent_files: {{getenv "dir_torrent_files" "/utorrent/torrents"}}
 ## dir_torrent_files (string):
 ## Default value: "". Directory where torrent files are stored. If the empty
 ## string, the value of dir_active is used. It is recommended that this
