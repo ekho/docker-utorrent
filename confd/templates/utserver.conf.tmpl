@@ -101,7 +101,7 @@ token_auth_enable: {{toLower (getenv "token_auth_enable" "true")}}
 ## the parameter list of any request made to that interface. If false, the
 ## µTorrent HTTP interface will not be protected in this manner.
 
-dir_active: {{toLower (getenv "dir_active" "/data")}}
+dir_active: {{getenv "dir_active" "/data"}}
 ## dir_active (string):
 ## Default value: "./". Directory in which currently downloaded data is saved.
 ## Can be an absolute path or a relative path. If it is a relative path, the
