@@ -157,7 +157,7 @@ dir_temp_files: {{getenv "dir_temp_files" "/utorrent/temp"}}
 ## to POSIX systems. The value should specify a directory, not a symbolic link
 ## to a directory.
 
-dir_autoload: {{toLower (getenv "dir_autoload" "/utorrent/autoload")}}
+dir_autoload: {{getenv "dir_autoload" "/utorrent/autoload"}}
 ## dir_autoload (string):
 ## Default value: "". Directory where torrent files will be recognized and
 ## auto-loaded. If the empty string, auto-load is disabled.
