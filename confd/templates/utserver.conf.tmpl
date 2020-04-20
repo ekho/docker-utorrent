@@ -109,7 +109,7 @@ dir_active: {{getenv "dir_active" "/data"}}
 ## is not defined or an empty string. It is recommended that this directory be
 ## hidden from users (i.e. not exported through Samba).
 
-dir_completed: {{toLower (getenv "dir_completed" "/data")}}
+dir_completed: {{getenv "dir_completed" "/data"}}
 ## dir_completed (string):
 ## Default value: "". Directory where completed downloads are stored. If the
 ## value is an empty string, the value of dir_active is used. This value must
