@@ -1,10 +1,10 @@
 # docker-utorrent
-![Docker Pulls](https://img.shields.io/docker/pulls/ekho/utorrent?style=flat-square)
-![Docker Stars](https://img.shields.io/docker/stars/ekho/utorrent?style=flat-square)
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ekho/utorrent?sort=semver&style=flat-square)
-![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/ekho/utorrent?sort=semver&style=flat-square)
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ekho/utorrent?style=flat-square)
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ekho/utorrent?style=flat-square)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent)
+[![Docker Stars](https://img.shields.io/docker/stars/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/ekho/utorrent?sort=semver&style=flat-square)](https://hub.docker.com/r/ekho/utorrent/tags)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/ekho/utorrent?sort=semver&style=flat-square)](https://hub.docker.com/r/ekho/utorrent/tags)
+[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent/builds)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent/builds)
 
 Docker image to run the [utorrent server](http://www.utorrent.com/).
 
