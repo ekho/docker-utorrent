@@ -241,7 +241,7 @@ rate_limit_local_peers: {{toLower (getenv "rate_limit_local_peers" "false")}}
 ## Default value: false. If true, rate limiting also applies to communications
 ## with peers in the local subnet. We recommend setting this value to false.
 
-dir_root:  {{toLower (getenv "dir_root" "/data")}}
+dir_root:  {{getenv "dir_root" "/data"}}
 ## dir_root (string):
 ## Default value: "". If not empty, dir_active, dir_completed, and
 ## dir_torrent_files are relative to this directory.
