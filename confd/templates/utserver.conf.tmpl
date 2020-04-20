@@ -144,7 +144,7 @@ dir_torrent_files: {{toLower (getenv "dir_torrent_files" "/utorrent/torrents")}}
 ## string, the value of dir_active is used. It is recommended that this
 ## directory be hidden from users (i.e. not exported through Samba).
 
-dir_temp_files: {{toLower (getenv "dir_temp_files" "/utorrent/temp")}}
+dir_temp_files: {{getenv "dir_temp_files" "/utorrent/temp"}}
 ## dir_temp_files (string):
 ## Default value: "". Directory where temporary files are stored. If the empty
 ## string, the value of dir_active is used. It is recommended that this
