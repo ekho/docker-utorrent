@@ -5,6 +5,7 @@
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/ekho/utorrent?sort=semver&style=flat-square)](https://hub.docker.com/r/ekho/utorrent/tags)
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent/builds)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ekho/utorrent?style=flat-square)](https://hub.docker.com/r/ekho/utorrent/builds)
+[![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/ekho)
 
 Docker image to run the [utorrent server](http://www.utorrent.com/).
 
