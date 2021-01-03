@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:20.04
 MAINTAINER Boris Gorbylev "ekho@ekho.name"
 
 ARG CONFD_VERSION=0.16.0
@@ -9,11 +9,13 @@ ENV LANGUAGE en_US:en
 
 RUN set -eux; \
     echo '--> Install packages'; \
+    echo "deb http://security.ubuntu.com/ubuntu xenial-security main" >> /etc/apt/sources.list; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
     apt-get install -y locales; \
     locale-gen en_US.UTF-8; \
     locale; \
+    apt-get install -y --no-install-recommends libssl1.0.0 libssl-dev; \
     apt-get install -y curl sudo openssl; \
     apt-get autoremove -y; \
     apt-get clean -y; \
