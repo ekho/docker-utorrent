@@ -14,7 +14,7 @@ RUN set -eux; \
     apt-get install -y locales; \
     locale-gen en_US.UTF-8; \
     locale; \
-    apt-get install -y curl sudo openssl; \
+    apt-get install -y curl sudo openssl unrar; \
     apt-get autoremove -y; \
     apt-get clean -y; \
     rm -rf /var/lib/apt/lists/*; \
